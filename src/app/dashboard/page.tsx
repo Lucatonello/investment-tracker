@@ -1,34 +1,100 @@
-import { Button } from "@/components/ui/button";
-import { getUserInvestments } from "@/server/database";
-import Link from "next/link";
+"use client"
 
-export default async function Page() {
-    const userInvestments = await getUserInvestments('1')
-    console.log('userInvestments', userInvestments)
+import { useEffect, useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { getUserInvestments } from "@/server/database"
+import Link from "next/link"
+import { fetchCurrentPrices } from '@/server/coingecko'
+
+type Investment = {
+    id: number
+    coin_name: string
+    coin_amount: number
+    coin_price: number
+    total_spent: number
+    buy_price: number
+    created_at: string
+}
+type Prices = {
+    [key: string]: {
+      ars: number;
+    };
+};
+
+export default function Page() {
+    const [userInvestments, setUserInvestments] = useState<Investment[]>([])
+    const [currentPrices, setCurrentPrices] = useState<Prices>({})
+
+    useEffect(() => {
+        async function fetchInvestments() {
+            const investments = await getUserInvestments('1') as Investment[]
+            setUserInvestments(investments)
+        }
+        fetchInvestments()
+    }, [])
+
+    useEffect(() => {
+        async function updatePrices() {
+            if (userInvestments.length > 0) {
+                const coinIds = userInvestments.map((investment) => investment.coin_name)
+                const prices = await fetchCurrentPrices(coinIds)
+                setCurrentPrices(prices)
+            }
+        }
+        updatePrices()
+
+        const interval = setInterval(updatePrices, 10000)
+
+        return () => clearInterval(interval)
+    }, [userInvestments])
+    
     return (
         <div>
+            <h1 className='font-bold text-3xl mb-4'>Buys</h1>
             <table className="table-auto border-collapse w-full font-sans">
                 <thead>
                     <tr>
-                    <th className="border border-gray-300 px-2 py-1 text-left">Coin</th>
-                    <th className="border border-gray-300 px-2 py-1 text-left">Amount</th>
-                    <th className="border border-gray-300 px-2 py-1 text-left">Buy price</th>
-                    <th className="border border-gray-300 px-2 py-1 text-left">Current price</th>
-                    <th className="border border-gray-300 px-2 py-1 text-left">Total spent</th>
-                    <th className="border border-gray-300 px-2 py-1 text-left">Profit</th>
+                        <th className="border border-gray-300 px-2 py-1 text-left">Date</th>   
+                        <th className="border border-gray-300 px-2 py-1 text-left">Coin</th>
+                        <th className="border border-gray-300 px-2 py-1 text-left">Amount</th>
+                        <th className="border border-gray-300 px-2 py-1 text-left">Buy price</th>
+                        <th className="border border-gray-300 px-2 py-1 text-left">Current price</th>
+                        <th className="border border-gray-300 px-2 py-1 text-left">Total spent</th>
+                        <th className="border border-gray-300 px-2 py-1 text-left">Profit</th>
                     </tr>
                 </thead>
                 {userInvestments.map((investment) => (
                     <tbody key={investment.id}>
                         <tr className="bg-gray-200">
-                        <td className="border border-gray-300 px-2 py-1">{investment.coin_name}</td>
-                        <td className="border border-gray-300 px-2 py-1">{investment.coin_amount}</td>
-                        <td className="border border-gray-300 px-2 py-1">{investment.buy_price}</td>
-                        {/* TODO: fetch current price */}
-                        <td className="border border-gray-300 px-2 py-1">X</td> 
-                        <td className="border border-gray-300 px-2 py-1">{investment.total_spent}</td>
-                        {/* TODO: calculate profit */}
-                        <td className="border border-gray-300 px-2 py-1 text-green-600">X</td> 
+                        <td className="border border-gray-300 px-2 py-1">
+                        {new Intl.DateTimeFormat('en-US', {
+                            month: '2-digit',
+                            day: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                        }).format(new Date(investment.created_at))}
+                        </td>
+                            <td className="border border-gray-300 px-2 py-1">{investment.coin_name}</td>
+                            <td className="border border-gray-300 px-2 py-1">{investment.coin_amount}</td>
+                            <td className="border border-gray-300 px-2 py-1">{investment.buy_price} ARS</td>
+                            {/* TODO: fetch current price */}
+                            <td className="border border-gray-300 px-2 py-1">
+                                {currentPrices[investment.coin_name]?.ars + " ARS" || 'Loading...'}
+                            </td>
+                            <td className="border border-gray-300 px-2 py-1">{investment.total_spent} ARS</td>
+                            {/* TODO: calculate profit */}
+                            <td 
+                            className={`border border-gray-300 px-2 py-1 ${
+                                (currentPrices[investment.coin_name]?.ars * investment.coin_amount - investment.total_spent) > 0
+                                ? 'text-green-600'
+                                : 'text-red-600'
+                            }`}>
+                                {(
+                                    currentPrices[investment.coin_name]?.ars * investment.coin_amount - investment.total_spent
+                                ).toFixed(2)} ARS
+                            </td> 
                         </tr>
                     </tbody>
                 ))}

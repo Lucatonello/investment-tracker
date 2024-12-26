@@ -40,3 +40,21 @@ export async function fetchCoinPrice(coinId: string): Promise<number> {
 
     return result
 }
+
+export async function fetchCurrentPrices(coinIds: Array<string>) {
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinIds}&vs_currencies=ars`
+    const options = {
+        method: 'GET',
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+    }
+
+    const result = await fetch(url, options)
+      .then(res => res.json())
+      .then(json => {
+        return json
+      })
+      .catch(err => console.error(err))
+
+    console.log('result', result)
+    return result
+}

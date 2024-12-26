@@ -63,7 +63,7 @@ export function NewCoinForm() {
       </div>
       <div>
         <label className="block" htmlFor="coin-amount">Amount</label>
-        <input className="w-full border p-2" id="coin-amount" type="number" min="0" />
+        <input className="w-full border p-2" id="coin-amount" type="float" min="0" />
       </div>
       <div>
         <label className="block" htmlFor="coin-price">Buy price</label>
