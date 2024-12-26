@@ -17,8 +17,24 @@ export async function fetchCoinList(): Promise<Coin[]> {
     const result = await fetch(url, options)
       .then(res => res.json())
       .then(json => {
-          console.log(json);
           return json;
+      })
+      .catch(err => console.error(err))
+
+    return result
+}
+
+export async function fetchCoinPrice(coinId: string): Promise<number> {
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=ars`
+    const options = {
+        method: 'GET',
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+    };
+    
+    const result = await fetch(url, options)
+      .then(res => res.json())
+      .then(json => {
+          return json[coinId].ars;
       })
       .catch(err => console.error(err))
 
