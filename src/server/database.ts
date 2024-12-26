@@ -17,7 +17,7 @@ export type Investment = {
     }
 }
 
-export async function saveInvestment(investment: Investment) {
+export async function saveInvestment(investment: Investment, userId: string) {
     console.log('investment', investment)
     const result = await sql`
         INSERT INTO investments 
@@ -27,8 +27,17 @@ export async function saveInvestment(investment: Investment) {
             ${investment.joinedValues.coinAmount}, 
             ${investment.joinedValues.coinPrice}, 
             ${investment.joinedValues.totalSpent},
-            1
+            ${userId || 1}
         )
     `
-    console.log('result', result)
+    // TODO: put real ID later 
+    return result
+}
+
+export async function getUserInvestments(userId: string) {
+    const result = await sql`
+        SELECT * FROM investments WHERE user_id = ${userId || 1}
+    `
+    // TODO: put real ID later 
+    return result
 }
