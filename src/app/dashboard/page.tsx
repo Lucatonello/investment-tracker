@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { getUserInvestments } from "@/server/database"
 import Link from "next/link"
 import { fetchCurrentPrices } from '@/server/coingecko'
+import { EditIcon, Trash2 } from 'lucide-react'
 
-type Investment = {
+export type Investment = {
     id: number
     coin_name: string
     coin_amount: number
@@ -43,7 +44,7 @@ export default function Page() {
         }
         updatePrices()
 
-        const interval = setInterval(updatePrices, 10000)
+        const interval = setInterval(updatePrices, 60000)
 
         return () => clearInterval(interval)
     }, [userInvestments])
@@ -61,6 +62,8 @@ export default function Page() {
                         <th className="border border-gray-300 px-2 py-1 text-left">Current price</th>
                         <th className="border border-gray-300 px-2 py-1 text-left">Total spent</th>
                         <th className="border border-gray-300 px-2 py-1 text-left">Profit</th>
+                        <th className="border border-gray-300 px-2 py-1 text-left" style={{ width: '150px' }}>Actions</th>
+
                     </tr>
                 </thead>
                 {userInvestments.map((investment) => (
@@ -95,6 +98,18 @@ export default function Page() {
                                     currentPrices[investment.coin_name]?.ars * investment.coin_amount - investment.total_spent
                                 ).toFixed(2)} ARS
                             </td> 
+                            <td className="border border-gray-300 px-2 py-1 flex space-x-2">
+                                <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]">
+                                    <Link href={`/dashboard/edit/${investment.id}`}>
+                                        <EditIcon />
+                                    </Link>
+                                </Button>
+                                <Button className="text-white px-4 py-2 rounded">
+                                    <Link href={`/dashboard/delete/${investment.id}`}>
+                                        <Trash2 />
+                                    </Link>
+                                </Button>
+                                </td>
                         </tr>
                     </tbody>
                 ))}

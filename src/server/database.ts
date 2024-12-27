@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config()
 
-console.log('DATABASE_URL:', process.env.DATABASE_URL)
 const DATABASE_URL = 'postgresql://neondb_owner:y2DMbfda5uiB@ep-young-cherry-a4zt15jb.us-east-1.aws.neon.tech/neondb?sslmode=require'
 
 const sql = neon(DATABASE_URL)
@@ -14,6 +13,26 @@ export type Investment = {
         coinAmount: number
         coinPrice: number
         totalSpent: number
+    }
+}
+
+export type User = {
+    id: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+  };
+
+export async function saveUser(user: User) {
+    console.log('user received in database.ts', user)
+    try {
+        await sql`
+            INSERT INTO users (id, email, first_name, last_name)
+            VALUES (${user.id}, ${user.email}, ${user.first_name}, ${user.last_name})
+        `
+    } catch (err) {
+        console.error(err)
+        throw err
     }
 }
 
