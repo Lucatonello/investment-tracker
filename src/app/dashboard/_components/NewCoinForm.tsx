@@ -1,11 +1,26 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { fetchCoinList, fetchCoinPrice, Coin } from '@/server/coingecko';
 import { Button } from '@/components/ui/button';
+import { fetchCoinList, fetchCoinPrice } from '@/server/coingecko';
 import { saveInvestment } from '@/server/database';
 
-export function NewCoinForm() {
+interface Coin {
+  id: string;
+  name: string;
+}
+
+interface Investment {
+  investment: {
+    coinName: string;
+    coinAmount: number;
+    coinPrice: number;
+    totalSpent: number;
+  };
+  userId: string | null;
+}
+
+export function NewCoinForm({ userId }: { userId: string | null }) {
   const [coinsList, setCoinsList] = useState<Coin[]>([]);
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [selectedCoinPrice, setSelectedCoinPrice] = useState<string | null>(null);
@@ -32,15 +47,21 @@ export function NewCoinForm() {
     e.preventDefault();
 
     const form = e.target as HTMLFormElement;
-    const joinedValues = {
+    const investment = {
       coinName: (form.elements.namedItem('coin-name') as HTMLSelectElement).value,
       coinAmount: parseFloat((form.elements.namedItem('coin-amount') as HTMLInputElement).value),
       coinPrice: parseFloat((form.elements.namedItem('coin-price') as HTMLInputElement).value),
       totalSpent: parseFloat((form.elements.namedItem('total-spent') as HTMLInputElement).value),
     };
+
+    const investmentData: Investment = {
+      investment,
+      userId,
+    };
     
-    saveInvestment({ joinedValues })
-  }
+    console.log('userid before calling saveInvestment', userId);
+    saveInvestment(investmentData);
+  };
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
@@ -70,9 +91,9 @@ export function NewCoinForm() {
         <input
           className="w-full border p-2"
           id="coin-price"
-          type="string"
+          type="text"
           value={selectedCoinPrice !== null ? selectedCoinPrice : ''}
-          onChange={(e) => setSelectedCoinPrice(String(e.target.value))}
+          onChange={(e) => setSelectedCoinPrice(e.target.value)}
         />
       </div>
       <div>

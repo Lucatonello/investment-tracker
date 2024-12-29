@@ -6,6 +6,7 @@ import { getUserInvestments } from "@/server/database"
 import Link from "next/link"
 import { fetchCurrentPrices } from '@/server/coingecko'
 import { EditIcon, Trash2 } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
 export type Investment = {
     id: number
@@ -18,9 +19,12 @@ export type Investment = {
 }
 type Prices = {
     [key: string]: {
-      ars: number;
-    };
-};
+      ars: number
+    }
+}
+
+const userId = localStorage.getItem('userId')
+if (!userId) redirect('/auth/sign-in')
 
 export default function Page() {
     const [userInvestments, setUserInvestments] = useState<Investment[]>([])
@@ -28,7 +32,7 @@ export default function Page() {
 
     useEffect(() => {
         async function fetchInvestments() {
-            const investments = await getUserInvestments('1') as Investment[]
+            const investments = await getUserInvestments(userId) as Investment[]
             setUserInvestments(investments)
         }
         fetchInvestments()
@@ -82,12 +86,10 @@ export default function Page() {
                             <td className="border border-gray-300 px-2 py-1">{investment.coin_name}</td>
                             <td className="border border-gray-300 px-2 py-1">{investment.coin_amount}</td>
                             <td className="border border-gray-300 px-2 py-1">{investment.buy_price} ARS</td>
-                            {/* TODO: fetch current price */}
                             <td className="border border-gray-300 px-2 py-1">
                                 {currentPrices[investment.coin_name]?.ars + " ARS" || 'Loading...'}
                             </td>
                             <td className="border border-gray-300 px-2 py-1">{investment.total_spent} ARS</td>
-                            {/* TODO: calculate profit */}
                             <td 
                             className={`border border-gray-300 px-2 py-1 ${
                                 (currentPrices[investment.coin_name]?.ars * investment.coin_amount - investment.total_spent) > 0
@@ -109,7 +111,7 @@ export default function Page() {
                                         <Trash2 />
                                     </Link>
                                 </Button>
-                                </td>
+                            </td>
                         </tr>
                     </tbody>
                 ))}
