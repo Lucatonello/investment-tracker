@@ -59,7 +59,6 @@ export function NewCoinForm({ userId }: { userId: string | null }) {
       userId,
     };
     
-    console.log('userid before calling saveInvestment', userId);
     saveInvestment(investmentData);
   };
 

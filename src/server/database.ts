@@ -32,7 +32,6 @@ type EditInvestmentFormProps = {
 };
 
 export async function saveUser(user: User) {
-    console.log(user)
     try {
         const hashedPassword = await bcrypt.hash(user.password, 10)
         await sql`
@@ -59,12 +58,10 @@ export async function logInUser(user: { email: string, password: string }) {
         throw new Error('Invalid password')
     }
     localStorage.setItem('userId', userFromDb.id.toString())
-    console.log(localStorage)
     redirect('/dashboard')
 }
 
 export async function saveInvestment(investment: Investment) {
-    console.log('userid received in saveInvestment: ', investment.userId)
     const result = await sql`
         INSERT INTO investments 
         (coin_name, coin_amount, buy_price, total_spent, user_id)
@@ -102,6 +99,13 @@ export async function updateInvestment({ investment }: { investment: InvestmentD
             buy_price = ${investment.buy_price},
             total_spent = ${investment.total_spent}
         WHERE id = ${investment.id}
+    `
+    redirect('/dashboard')
+}
+
+export async function deleteInvestment(investmentid: number) {
+    const result = await sql`
+        DELETE FROM investments WHERE id = ${investmentid}
     `
     redirect('/dashboard')
 }

@@ -55,6 +55,5 @@ export async function fetchCurrentPrices(coinIds: Array<string>) {
       })
       .catch(err => console.error(err))
 
-    console.log('result', result)
     return result
 }
