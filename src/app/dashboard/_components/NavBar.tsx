@@ -1,3 +1,4 @@
+import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 
 export function Navbar() {
@@ -9,7 +10,12 @@ export function Navbar() {
             {/* Placeholder navbar options for now */}
             <Link href="/" className="hover:underline">Home</Link>
             <Link href="/dashboard" className="hover:underline">Dashboard</Link>
-            <Link href="/dashboard/crypto" className="hover:underline">Crypto</Link>
+            <Link href="/auth/logout" className="hover:underline">
+                <div className="flex">
+                    <LogOutIcon className="ml-5" />
+                    <p className="pl-2">Logout</p>
+                </div>
+            </Link>
         </div>
     </nav>
 }

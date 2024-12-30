@@ -2,6 +2,7 @@ import { neon } from "@neondatabase/serverless"
 import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
+import { InvestmentData } from "../app/dashboard/_components/EditInvestmentForm"
 
 dotenv.config()
 
@@ -25,6 +26,10 @@ export type User = {
     lastName: string
     password: string
 }
+
+type EditInvestmentFormProps = {
+    investmentId: string;
+};
 
 export async function saveUser(user: User) {
     console.log(user)
@@ -79,4 +84,24 @@ export async function getUserInvestments(userId: string | null) {
         SELECT * FROM investments WHERE user_id = ${userId || 1}
     `
     return result
+}
+
+export async function getInvestmentData({ investmentId }: EditInvestmentFormProps) {
+    const result = await sql`
+        SELECT * FROM investments WHERE id = ${investmentId}
+    `
+    return result[0]
+}
+
+export async function updateInvestment({ investment }: { investment: InvestmentData }) {
+    const result = await sql`
+        UPDATE investments
+        SET coin_name = ${investment.coin_name},
+            created_at = ${investment.created_at},
+            coin_amount = ${investment.coin_amount},
+            buy_price = ${investment.buy_price},
+            total_spent = ${investment.total_spent}
+        WHERE id = ${investment.id}
+    `
+    redirect('/dashboard')
 }

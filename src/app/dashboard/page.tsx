@@ -94,6 +94,7 @@ export default function Page() {
                             className={`border border-gray-300 px-2 py-1 ${
                                 (currentPrices[investment.coin_name]?.ars * investment.coin_amount - investment.total_spent) > 0
                                 ? 'text-green-600'
+                                : (currentPrices[investment.coin_name]?.ars * investment.coin_amount - investment.total_spent) == 0 ? ''
                                 : 'text-red-600'
                             }`}>
                                 {(
@@ -102,7 +103,7 @@ export default function Page() {
                             </td> 
                             <td className="border border-gray-300 px-2 py-1 flex space-x-2">
                                 <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]">
-                                    <Link href={`/dashboard/edit/${investment.id}`}>
+                                    <Link href={`/dashboard/${investment.id}/edit`}>
                                         <EditIcon />
                                     </Link>
                                 </Button>
