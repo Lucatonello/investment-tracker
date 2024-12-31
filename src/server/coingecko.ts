@@ -57,3 +57,22 @@ export async function fetchCurrentPrices(coinIds: Array<string>) {
 
     return result
 }
+
+export async function fetchCoinChart(coinId: string) {
+    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=ars&days=7`
+    const options = {
+        method: 'GET',
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+    }
+
+    const result = await fetch(url, options)
+      .then(res => res.json())
+      .then(json => {
+        return json
+      })
+      .catch(err => console.error(err))
+
+
+    console.log(result)
+    return result
+}
