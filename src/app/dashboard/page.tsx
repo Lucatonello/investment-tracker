@@ -133,7 +133,7 @@ export default function Page() {
                     </tbody>
                 ))}
             </table>
-            <div className='mt-4 border-t border-gray-300 pt-4 font-semibold'>
+            <div className='mt-4 pt-4 font-semibold'>
                 Total: {formatter.format(calculatedTotal)}
             </div>
             <Button className="mt-4">
@@ -141,6 +141,8 @@ export default function Page() {
                     Add investment
                 </Link>
             </Button>
+            <hr className='mt-4 mb-4' style={{ borderColor: '#d0d5db' }} />
+            <h1 className='font-bold text-3xl mb-4'>Your crypto</h1>
             <CoinCharts coins={userInvestments.map((investment) => investment.coin_name)} />
         </div>
     );
