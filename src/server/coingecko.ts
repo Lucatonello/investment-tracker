@@ -59,6 +59,7 @@ export async function fetchCurrentPrices(coinIds: Array<string>) {
 }
 
 export async function fetchCoinChart(coinId: string) {
+  try {
     const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=ars&days=7`
     const options = {
         method: 'GET',
@@ -72,7 +73,26 @@ export async function fetchCoinChart(coinId: string) {
       })
       .catch(err => console.error(err))
 
+    return result
+  } catch (err) {
+    console.error(err)
+    return null
+  }
+}
 
-    console.log(result)
+export async function fetchCoinsMarketData() {
+  const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=ars&order=market_cap_desc&per_page=200&page=1&sparkline=true&price_change_percentage=7d&locale=en'
+  const options = {
+    method: 'GET',
+    headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+  }
+
+  const result = await fetch(url, options)
+    .then(res => res.json())
+    .then(json => {
+      return json
+    })
+    .catch(err => console.error(err))
+
     return result
 }

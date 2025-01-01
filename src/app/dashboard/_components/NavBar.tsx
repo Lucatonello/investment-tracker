@@ -10,6 +10,7 @@ export function Navbar() {
             {/* Placeholder navbar options for now */}
             <Link href="/" className="hover:underline">Home</Link>
             <Link href="/dashboard" className="hover:underline">Dashboard</Link>
+            <Link href="/dashboard/trending" className="hover:underline">Trending</Link>
             <Link href="/auth/logout" className="hover:underline">
                 <div className="flex">
                     <LogOutIcon className="ml-5" />

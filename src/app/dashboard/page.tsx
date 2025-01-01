@@ -33,9 +33,9 @@ const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
 });
 
-export default function Page() {
+export default function Dashboard() {
     const [userInvestments, setUserInvestments] = useState<Investment[]>([]);
-    const [currentPrices, setCurrentPrices] = useState<Prices>({});
+    const [currentPrices, setCurrentPrices] = useState<{ [key: string]: { ars: number } }>({});
     const [total, setTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -51,7 +51,11 @@ export default function Page() {
             if (userInvestments.length > 0) {
                 const coinIds = userInvestments.map((investment) => investment.coin_name);
                 const prices = await fetchCurrentPrices(coinIds);
-                setCurrentPrices(prices);
+                if (prices) {
+                    setCurrentPrices(prices);
+                } else {
+                    console.error('Failed to fetch current prices');
+                }
             }
         }
         updatePrices();
