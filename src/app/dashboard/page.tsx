@@ -71,6 +71,12 @@ export default function Dashboard() {
         return acc + investmentValue;
     }, 0);
 
+    const totalProfit = userInvestments.reduce((acc, investment) => {
+        const currentPrice = currentPrices[investment.coin_name]?.ars || 0;
+        const profit = (currentPrice - investment.buy_price) * investment.coin_amount;
+        return acc + profit;
+    }, 0);
+
     return (
         <div>
             <h1 className='font-bold text-3xl mb-4'>Buys</h1>
@@ -137,9 +143,17 @@ export default function Dashboard() {
                     </tbody>
                 ))}
             </table>
-            <div className='mt-4 pt-4 font-semibold'>
-                Total: {formatter.format(calculatedTotal)}
+            <div className='flex'>
+                <div className="mt-4 mr-4 p-4 border border-gray-300 w-64">
+                    <p className="font-semibold">Total worth: {formatter.format(calculatedTotal)}</p>
+                </div>
+                <div className="mt-4 p-4 border border-gray-300 w-64">
+                    <p className={`font-semibold ${totalProfit > 0 ? 'text-green-600' : totalProfit === 0 ? '' : 'text-red-600'}`}>
+                        Total Profit: {formatter.format(totalProfit)}
+                    </p>
+                </div>
             </div>
+           
             <Button className="mt-4">
                 <Link href="/dashboard/add">
                     Add investment

@@ -96,3 +96,20 @@ export async function fetchCoinsMarketData() {
 
     return result
 }
+
+export async function fetchPopularCoins() {
+  const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=ars&order=volume_desc&per_page=10'
+  const options = {
+    method: 'GET',
+    headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+  }
+
+  const result = await fetch(url, options)
+    .then(res => res.json())
+    .then(json => {
+      return json
+    })
+    .catch(err => console.error(err))
+    
+    return result
+}
