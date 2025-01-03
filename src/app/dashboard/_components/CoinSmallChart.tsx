@@ -112,12 +112,12 @@ export function CoinSmallChart({ coin }: CoinSmallChartProps) {
       {data ? (
         <div>
           <div className="p-4">
-            <canvas ref={chartRef} />
+            <canvas ref={chartRef}  />
           </div>
         </div>
       ) : (
         <div>Loading...</div>
       )}
     </div>
-  );
+  )
 }

@@ -4,11 +4,13 @@ import { fetchCoinsMarketData, fetchPopularCoins } from "@/server/coingecko"
 import { act, SetStateAction, useEffect, useState } from "react"
 import { CoinSmallChart } from "../_components/CoinSmallChart"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
 
 export default function TrendingPage() {
     const [topTenCoins, setTopTenCoins] = useState<any[]>([])
     const [popularCoins, setPopularCoins] = useState<any[]>([])
     const [activeTab, setActiveTab] = useState<string>('Top movers (7D)')
+    const [selectedCoin, setSelectedCoin] = useState<string | null>(null)
 
     useEffect(() => {
         async function getCoinsMarketData() {
@@ -51,7 +53,7 @@ export default function TrendingPage() {
                       <h1 className="font-bold text-4xl mt-4 mb-4">Top Coins by 7-Day Price Change</h1>        
                       <ul>
                           {topTenCoins?.map((coin) => (
-                            <li key={coin.id} className="flex flex-col bg-[#f0f9ff] p-5 m-10 rounded-lg shadow-lg mb-6 hover:shadow-1xl transition-shadow">
+                            <li key={coin.id} className="flex flex-col bg-[#f0f9ff] p-5 m-10 rounded-lg shadow-lg mb-6 hover:shadow-1xl transition-shadow h-[717px]">
                               <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center">
                                   <img src={coin.image} alt="Coin image" className="w-14 h-14 rounded-full mr-4" />
@@ -83,8 +85,14 @@ export default function TrendingPage() {
                                   </span>
                                 </p>
                               </div>
-                              {/* TODO: Add a chart skeleton */}
-                              <CoinSmallChart coin={coin.id} />
+                            
+                            {selectedCoin === coin.id ? (
+                            <CoinSmallChart coin={coin.id} />
+                            ) : (
+                                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                    <Button onClick={() => setSelectedCoin(coin.id)}>Show Chart</Button>
+                                </div>
+                            )}
                             </li>
                           ))}
                       </ul>
@@ -125,8 +133,13 @@ export default function TrendingPage() {
                               </span>
                             </p>
                           </div>
-                          {/* TODO: Add a chart skeleton */}
-                          <CoinSmallChart coin={coin.id} />
+                          {selectedCoin === coin.id ? (
+                            <CoinSmallChart coin={coin.id} />
+                            ) : (
+                                <div className="w-full h-[449px] bg-gray-200 flex items-center justify-center">
+                                    <Button onClick={() => setSelectedCoin(coin.id)}>Show Chart</Button>
+                                </div>
+                            )}
                         </li>
                       ))}
                     </ul>
