@@ -43,7 +43,7 @@ export default function TrendingPage() {
     }, [activeTab])
 
     return <div>
-              <Tabs defaultValue={'Top Movers (7D)'} onValueChange={(value) => setActiveTab(value)}>
+              <Tabs defaultValue={'Top movers (7D)'} onValueChange={(value) => setActiveTab(value)}>
                   <TabsList className="bg-background/60">
                     <TabsTrigger value={'Top movers (7D)'}>Top Movers (7D)</TabsTrigger>
                     <TabsTrigger value={'Most popular'}>Most Popular</TabsTrigger>
@@ -57,7 +57,8 @@ export default function TrendingPage() {
                               <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center">
                                   <img src={coin.image} alt="Coin image" className="w-14 h-14 rounded-full mr-4" />
-                                  <h2 className="text-2xl font-semibold text-gray-800">{coin.name} ({coin.symbol})</h2>
+                                  {/* TODO: redirect to the previous page on arrow back click */}
+                                  <a href={`/dashboard/details/${coin.id}`} className="text-2xl font-semibold text-gray-800">{coin.name} ({coin.symbol})</a>
                                 </div>
                                 <div className="text-right">
                                   <p className="text-xl font-medium text-gray-900">
@@ -89,7 +90,7 @@ export default function TrendingPage() {
                             {selectedCoin === coin.id ? (
                             <CoinSmallChart coin={coin.id} />
                             ) : (
-                                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                <div className="w-full h-full rounded-lg bg-gray-200 flex items-center justify-center">
                                     <Button onClick={() => setSelectedCoin(coin.id)}>Show Chart</Button>
                                 </div>
                             )}
@@ -105,7 +106,7 @@ export default function TrendingPage() {
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center">
                               <img src={coin.image} alt="Coin image" className="w-14 h-14 rounded-full mr-4" />
-                              <h2 className="text-2xl font-semibold text-gray-800">{coin.name} ({coin.symbol})</h2>
+                              <a href={`/dashboard/details/${coin.id}`} className="text-2xl font-semibold text-gray-800">{coin.name} ({coin.symbol})</a>
                             </div>
                             <div className="text-right">
                               <p className="text-xl font-medium text-gray-900">
@@ -136,7 +137,7 @@ export default function TrendingPage() {
                           {selectedCoin === coin.id ? (
                             <CoinSmallChart coin={coin.id} />
                             ) : (
-                                <div className="w-full h-[449px] bg-gray-200 flex items-center justify-center">
+                                <div className="w-full h-[449px] rounded-lg bg-gray-200 flex items-center justify-center">
                                     <Button onClick={() => setSelectedCoin(coin.id)}>Show Chart</Button>
                                 </div>
                             )}
