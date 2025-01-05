@@ -9,7 +9,7 @@ export default function CoinsPage() {
     const coinIdTyped = Array.isArray(coinId) ? coinId[0] : coinId || "Unknown Coin"
 
     return <div>
-        <PageWithBackArrow title="Coin Details">
+        <PageWithBackArrow title="Coin Details" href={'/dashboard'}>
             <CoinPage coinId={coinIdTyped} />
         </PageWithBackArrow>
     </div>

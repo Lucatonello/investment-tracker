@@ -57,7 +57,6 @@ export default function TrendingPage() {
                               <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center">
                                   <img src={coin.image} alt="Coin image" className="w-14 h-14 rounded-full mr-4" />
-                                  {/* TODO: redirect to the previous page on arrow back click */}
                                   <a href={`/dashboard/details/${coin.id}`} className="text-2xl font-semibold text-gray-800">{coin.name} ({coin.symbol})</a>
                                 </div>
                                 <div className="text-right">

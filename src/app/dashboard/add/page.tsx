@@ -9,7 +9,7 @@ if (!userId) redirect('/auth/sign-in')
 
 export default function AddCoin() {
     return <div>
-        <PageWithBackArrow title="Add investment">
+        <PageWithBackArrow title="Add investment" href="/dashboard">
             <NewCoinForm  userId={userId}/>
         </PageWithBackArrow>
     </div>

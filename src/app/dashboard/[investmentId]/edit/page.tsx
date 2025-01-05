@@ -15,7 +15,7 @@ export default function EditInvestment() {
     }
     
     return (
-        <PageWithBackArrow title="Edit Investment">
+        <PageWithBackArrow title="Edit Investment" href="/dashboard">
             <EditInvestmentForm investmentId={investmentId} />
         </PageWithBackArrow>
     );

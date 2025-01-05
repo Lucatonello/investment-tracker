@@ -1,7 +1,20 @@
+"use client"
+
+import { Button } from "@/components/ui/button";
 import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export function Navbar() {
+    const [showSearchButton, setShowSearchButton] = useState(false)
+    const [keyWord, setKeyWord] = useState("")
+    const router = useRouter()
+
+    const handleSearch = () => {
+        router.push(`/search/${keyWord}`);
+    }
+
     return <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
     <h1 className="text-xl font-bold">
         <Link href="/">Investment tracker</Link>
@@ -10,7 +23,20 @@ export function Navbar() {
         <Link href="/" className="hover:underline align-center">Home</Link>
         <Link href="/dashboard" className="hover:underline">Dashboard</Link>
         <Link href="/dashboard/trending" className="hover:underline">Trending</Link>
-        <input type="text" placeholder="Search" className="p-2 rounded-lg text-black focus:outline-none" />
+        <input 
+            type="text" 
+            placeholder="Search" 
+            className="p-2 rounded-lg text-black focus:outline-none" 
+            onChange={(e) => {
+                if (e.target.value.length > 0) {
+                    setShowSearchButton(true);
+                    setKeyWord(e.target.value);
+                } else {
+                    setShowSearchButton(false);
+                }
+            }} 
+        />
+        {showSearchButton && <Button onClick={handleSearch}>Search</Button>}
         <Link href="/auth/logout" className="hover:underline flex items-center focus:outline-none">
             <LogOutIcon className="ml-5" />
             <p className="pl-2">Logout</p>
