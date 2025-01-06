@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function Navbar() {
@@ -12,7 +12,9 @@ export function Navbar() {
     const router = useRouter()
 
     const handleSearch = () => {
-        router.push(`/search/${keyWord}`);
+        if (router) {
+            router.push(`/search/${keyWord}`)
+        } else console.log('router not found')
     }
 
     return <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
@@ -25,7 +27,7 @@ export function Navbar() {
         <Link href="/dashboard/trending" className="hover:underline">Trending</Link>
         <input 
             type="text" 
-            placeholder="Search" 
+            placeholder="Search for a coin" 
             className="p-2 rounded-lg text-black focus:outline-none" 
             onChange={(e) => {
                 if (e.target.value.length > 0) {

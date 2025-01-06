@@ -18,7 +18,7 @@ export function CoinPage({ coinId }: { coinId: string }) {
             <div className="flex items-center mb-4">
                 <img src={coinData.image.small} alt={coinData.name} />
                 <div className="flex">
-                    <a className="ml-3 text-4xl underline" href={coinData.links.homepage} target="_blank">{coinData.name}</a>
+                    <a className="ml-3 text-4xl underline" href={coinData.links.homepage[0]} target="_blank">{coinData.name}</a>
                     <p className="ml-2 text-4xl">({coinData.symbol})</p>
                 </div>
             </div>
@@ -72,7 +72,7 @@ export function CoinPage({ coinId }: { coinId: string }) {
                     <a
                         className="inline-block ml-4 px-4 w-[138px] text-center py-2 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200 hover:shadow-md transition-all duration-200"
                         style={{ maxWidth: "300px" }}
-                        href={coinData.links.homepage}
+                        href={coinData.links.homepage[0]}
                         target="_blank"
                         rel="noopener noreferrer"
                     >

@@ -109,7 +109,7 @@ export function EditInvestmentForm({ investmentId }: EditInvestmentFormProps) {
                 <input
                     className="w-full border p-2"
                     id="coin-price"
-                    type="number"
+                    type="float"
                     min="0"
                     value={investmentData.buy_price || ""}
                     onChange={(e) => 

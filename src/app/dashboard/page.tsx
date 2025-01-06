@@ -36,7 +36,6 @@ const formatter = new Intl.NumberFormat('en-US', {
 export default function Dashboard() {
     const [userInvestments, setUserInvestments] = useState<Investment[]>([]);
     const [currentPrices, setCurrentPrices] = useState<{ [key: string]: { ars: number } }>({});
-    const [total, setTotal] = useState<number>(0);
 
     useEffect(() => {
         async function fetchInvestments() {
@@ -59,10 +58,6 @@ export default function Dashboard() {
             }
         }
         updatePrices();
-
-        const interval = setInterval(updatePrices, 60000);
-
-        return () => clearInterval(interval);
     }, [userInvestments]);
 
     const calculatedTotal = userInvestments.reduce((acc, investment) => {
@@ -161,7 +156,7 @@ export default function Dashboard() {
             </Button>
             <hr className='mt-4 mb-4' style={{ borderColor: '#d0d5db' }} />
             <h1 className='font-bold text-3xl mb-4'>Your crypto</h1>
-            <CoinCharts coins={userInvestments.map((investment) => investment.coin_name)} />
+            <CoinCharts coins={[...new Set(userInvestments.map((investment) => investment.coin_name))]} />
         </div>
     );
 }
