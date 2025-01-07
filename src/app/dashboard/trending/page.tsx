@@ -5,12 +5,14 @@ import { act, SetStateAction, useEffect, useState } from "react"
 import { CoinSmallChart } from "../_components/CoinSmallChart"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
+import { fetchNews } from "@/server/newsData"
 
 export default function TrendingPage() {
     const [topTenCoins, setTopTenCoins] = useState<any[]>([])
     const [popularCoins, setPopularCoins] = useState<any[]>([])
     const [activeTab, setActiveTab] = useState<string>('Top movers (7D)')
     const [selectedCoin, setSelectedCoin] = useState<string | null>(null)
+    const [news, setNews] = useState<any>([])
 
     useEffect(() => {
         async function getCoinsMarketData() {
@@ -39,6 +41,13 @@ export default function TrendingPage() {
           setPopularCoins(response)
         }
         getMostPopularCoins()
+      } else if (activeTab === 'News') {
+        async function getNews() {
+          const response = await fetchNews()
+          setNews(response.results)
+          console.log(response.results)
+        }
+        getNews()
       }
     }, [activeTab])
 
@@ -47,7 +56,7 @@ export default function TrendingPage() {
                   <TabsList className="bg-background/60">
                     <TabsTrigger value={'Top movers (7D)'}>Top Movers (7D)</TabsTrigger>
                     <TabsTrigger value={'Most popular'}>Most Popular</TabsTrigger>
-                    <TabsTrigger value={'Placeholder'}>Placeholder</TabsTrigger>
+                    <TabsTrigger value={'News'}>News</TabsTrigger>
                   </TabsList>
                   <TabsContent value="Top movers (7D)">
                       <h1 className="font-bold text-4xl mt-4 mb-4">Top Coins by 7-Day Price Change</h1>        
@@ -144,8 +153,69 @@ export default function TrendingPage() {
                       ))}
                     </ul>
                   </TabsContent>
-                  <TabsContent value="Placeholder">
-                  <h1 className="font-bold text-4xl mt-4 mb-4">Placeholder</h1>  
+                  <TabsContent value="News">
+                    <h1 className="font-bold text-4xl mt-4 mb-4">News</h1>
+                    {news ? (
+  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {news.map((newsItem: any) => (
+      <li 
+        key={newsItem.article_id} 
+        className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200"
+      >
+        <div className="flex items-center gap-2 p-4 border-b">
+          <img 
+            src={newsItem.source_icon} 
+            alt="Source icon" 
+            className="w-6 h-6 rounded-full" 
+          />
+          <a 
+            href={newsItem.source_url} 
+            target="_blank"
+            className="text-sm font-medium text-blue-600 hover:underline"
+          >
+            {newsItem.source_name}
+          </a>
+        </div>
+        <div className="p-4">
+          <a 
+            href={newsItem.link} 
+            className="text-lg font-semibold text-gray-800 hover:text-blue-600"
+          >
+            {newsItem.title}
+          </a>
+          <p className="text-sm text-gray-600 mt-2">
+            {newsItem.description?.length > 200
+              ? `${newsItem.description.substring(0, 200)}...`
+              : newsItem.description
+            }
+          </p>
+        </div>
+        <div className="relative h-48 bg-gray-100">
+          <img 
+            src={newsItem.image_url} 
+            alt="News" 
+            className="object-cover w-full h-full" 
+          />
+        </div>
+        <div className="p-4">
+          {newsItem.creator && <p className="text-sm text-gray-600">By {newsItem.creator[0]}</p>}
+          <ul className="flex flex-wrap gap-2 mt-2">
+            {newsItem.category.map((cate: any) => (
+              <li 
+                key={cate} 
+                className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-md"
+              >
+                {cate}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
+    ))}
+  </ul>
+) : (
+  <p className="text-center text-gray-500">Loading...</p>
+)}
                   </TabsContent>
               </Tabs>
 
