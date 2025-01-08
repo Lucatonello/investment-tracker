@@ -156,67 +156,74 @@ export default function TrendingPage() {
                   <TabsContent value="News">
                     <h1 className="font-bold text-4xl mt-4 mb-4">News</h1>
                     {news ? (
-  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {news.map((newsItem: any) => (
-      <li 
-        key={newsItem.article_id} 
-        className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200"
-      >
-        <div className="flex items-center gap-2 p-4 border-b">
-          <img 
-            src={newsItem.source_icon} 
-            alt="Source icon" 
-            className="w-6 h-6 rounded-full" 
-          />
-          <a 
-            href={newsItem.source_url} 
-            target="_blank"
-            className="text-sm font-medium text-blue-600 hover:underline"
-          >
-            {newsItem.source_name}
-          </a>
-        </div>
-        <div className="p-4">
-          <a 
-            href={newsItem.link} 
-            className="text-lg font-semibold text-gray-800 hover:text-blue-600"
-          >
-            {newsItem.title}
-          </a>
-          <p className="text-sm text-gray-600 mt-2">
-            {newsItem.description?.length > 200
-              ? `${newsItem.description.substring(0, 200)}...`
-              : newsItem.description
-            }
-          </p>
-        </div>
-        <div className="relative h-48 bg-gray-100">
-          <img 
-            src={newsItem.image_url} 
-            alt="News" 
-            className="object-cover w-full h-full" 
-          />
-        </div>
-        <div className="p-4">
-          {newsItem.creator && <p className="text-sm text-gray-600">By {newsItem.creator[0]}</p>}
-          <ul className="flex flex-wrap gap-2 mt-2">
-            {newsItem.category.map((cate: any) => (
-              <li 
-                key={cate} 
-                className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-md"
-              >
-                {cate}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </li>
-    ))}
-  </ul>
-) : (
-  <p className="text-center text-gray-500">Loading...</p>
-)}
-                  </TabsContent>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {news.map((newsItem: any) => (
+                          <li 
+                            key={newsItem.article_id} 
+                            className="bg-white shadow-md rounded-md overflow-hidden hover:shadow-lg transition-shadow duration-200 flex flex-col"
+                          >
+                            <div className="flex items-center gap-3 p-4 border-b">
+                              <img 
+                                src={newsItem.source_icon} 
+                                alt="Source icon" 
+                                className="w-8 h-8 rounded-full" 
+                              />
+                              <a 
+                                href={newsItem.source_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-sm font-medium text-blue-600 hover:underline truncate"
+                              >
+                                {newsItem.source_name}
+                              </a>
+                            </div>
+
+                            <div className="relative h-40 bg-gray-100">
+                              <img 
+                                src={newsItem.image_url} 
+                                alt="News" 
+                                className="object-cover w-full h-full"
+                              />
+                            </div>
+
+                            <div className="p-4 flex-grow flex flex-col">
+                              <a 
+                                href={newsItem.link} 
+                                target="_blank"
+                                className="text-lg font-semibold text-gray-800 hover:text-blue-600 truncate"
+                              >
+                                {newsItem.title}
+                              </a>
+                              <p className="text-sm text-gray-600 mt-3 flex-grow line-clamp-3">
+                                {newsItem.description?.length > 150
+                                  ? `${newsItem.description.substring(0, 150)}...`
+                                  : newsItem.description}
+                              </p>
+                            </div>
+
+                            <div className="p-4 border-t">
+                              {newsItem.creator && (
+                                <p className="text-xs text-gray-600 mb-2">By {newsItem.creator[0]}</p>
+                              )}
+                              <ul className="flex flex-wrap gap-2">
+                                {newsItem.category.map((cate: any) => (
+                                  <li 
+                                    key={cate} 
+                                    className="text-xs bg-gray-200 text-gray-700 px-3 py-1 rounded-md"
+                                  >
+                                    {cate}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-center text-gray-500">Loading...</p>
+                    )}
+
+              </TabsContent>
               </Tabs>
 
    </div>
