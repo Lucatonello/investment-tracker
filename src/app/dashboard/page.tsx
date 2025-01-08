@@ -7,16 +7,17 @@ import Link from "next/link"
 import { fetchCurrentPrices } from '@/server/coingecko'
 import { EditIcon, Trash2 } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import { CoinCharts } from './_components/CoinCharts'
+import { CoinCharts } from './_components/charts/CoinCharts'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import Stats from './_components/Stats'
 
 export type Investment = {
     id: number
     coin_name: string
-    coin_amount: number
+    coin_amount: string
     coin_price: number
     total_spent: number
-    buy_price: number
+    buy_price: string
     created_at: string
 }
 type Prices = {
@@ -63,13 +64,13 @@ export default function Dashboard() {
 
     const calculatedTotal = userInvestments.reduce((acc, investment) => {
         const currentPrice = currentPrices[investment.coin_name]?.ars || 0;
-        const investmentValue = investment.coin_amount * currentPrice;
+        const investmentValue = parseFloat(investment.coin_amount) * currentPrice;
         return acc + investmentValue;
     }, 0);
 
     const totalProfit = userInvestments.reduce((acc, investment) => {
         const currentPrice = currentPrices[investment.coin_name]?.ars || 0;
-        const profit = (currentPrice - investment.buy_price) * investment.coin_amount;
+        const profit = (currentPrice - parseFloat(investment.buy_price)) * parseFloat(investment.coin_amount);
         return acc + profit;
     }, 0);
 
@@ -111,7 +112,7 @@ export default function Dashboard() {
                                     </td>
                                     <td className="border border-gray-300 px-2 py-1">{investment.coin_name}</td>
                                     <td className="border border-gray-300 px-2 py-1">{investment.coin_amount}</td>
-                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(investment.buy_price)}</td>
+                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(investment.buy_price))}</td>
                                     <td className="border border-gray-300 px-2 py-1">
                                         {currentPrices[investment.coin_name]
                                             ? formatter.format(currentPrices[investment.coin_name].ars)
@@ -120,14 +121,14 @@ export default function Dashboard() {
                                     <td className="border border-gray-300 px-2 py-1">{formatter.format(investment.total_spent)}</td>
                                     <td
                                         className={`border border-gray-300 px-2 py-1 ${
-                                            ((currentPrices[investment.coin_name]?.ars - investment.buy_price) * investment.coin_amount) > 0
+                                            ((currentPrices[investment.coin_name]?.ars - parseFloat(investment.buy_price)) * parseFloat(investment.coin_amount)) > 0
                                                 ? 'text-green-600'
-                                                : ((currentPrices[investment.coin_name]?.ars - investment.buy_price) * investment.coin_amount) === 0 ? ''
+                                                : ((currentPrices[investment.coin_name]?.ars - parseFloat(investment.buy_price)) * parseFloat(investment.coin_amount)) === 0 ? ''
                                                 : 'text-red-600'
                                         }`}
                                     >
                                         {formatter.format(
-                                            (currentPrices[investment.coin_name]?.ars - investment.buy_price) * investment.coin_amount
+                                            (currentPrices[investment.coin_name]?.ars - parseFloat(investment.buy_price)) * parseFloat(investment.coin_amount)
                                         )}
                                     </td>
                                     <td className="border border-gray-300 px-2 py-1 flex space-x-2">
@@ -171,7 +172,7 @@ export default function Dashboard() {
                 </TabsContent>
 
                 <TabsContent value='Stats'>
-                    stats
+                    <Stats userInvestment={userInvestments}/>
                 </TabsContent>
             </Tabs>
         </div>

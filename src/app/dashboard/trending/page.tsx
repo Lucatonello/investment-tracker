@@ -2,7 +2,7 @@
 
 import { fetchCoinsMarketData, fetchPopularCoins } from "@/server/coingecko"
 import { act, SetStateAction, useEffect, useState } from "react"
-import { CoinSmallChart } from "../_components/CoinSmallChart"
+import { CoinSmallChart } from "../_components/charts/CoinSmallChart"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { fetchNews } from "@/server/newsData"

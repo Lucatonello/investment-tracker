@@ -1,6 +1,6 @@
 import { fetchCoinDatabyId } from "@/server/coingecko"
 import { useEffect, useState } from "react"
-import { CoinCharts } from "./CoinCharts"
+import { CoinCharts } from "./charts/CoinCharts"
 
 export function CoinPage({ coinId }: { coinId: string }) {
     const [coinData, setCoinData] = useState<any>(null)
