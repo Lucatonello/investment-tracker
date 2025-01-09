@@ -72,7 +72,7 @@ export function CoinCharts({ coins }: CoinChartsProps) {
           const chart = new Chart(canvas, {
             type: "line",
             data: {
-              labels: coinData.prices?.map((price) => new Date(price[0]).toLocaleString()), // format timestamps into human-readable dates
+              labels: coinData.prices?.map((price) => new Date(price[0]).toLocaleString()), 
               datasets: [
                 {
                   label: "Price (ARS)",
@@ -109,7 +109,7 @@ export function CoinCharts({ coins }: CoinChartsProps) {
               },
               scales: {
                 x: {
-                  type: "category", // to use string dates on x-axis
+                  type: "category", 
                   title: {
                     display: true,
                     text: "Time",
@@ -125,7 +125,6 @@ export function CoinCharts({ coins }: CoinChartsProps) {
             },
           });
 
-          // Store the chart instance in the ref array
           chartInstances.current[index] = chart;
         }
       });

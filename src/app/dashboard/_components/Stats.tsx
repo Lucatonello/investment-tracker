@@ -33,7 +33,10 @@ export default function Stats({ userInvestment }: { userInvestment: Investment[]
     }, [])
     
     return <div>
-        <h2>Investment Distribution</h2>
-        <InvestmentChart userInvestment={distribution} />
+        <div className="flex flex-col items-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Investment Distribution</h2>
+            <InvestmentChart userInvestment={distribution} />
+        </div>
+        <hr className="my-4"/>
     </div>
 }

@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
 import { InvestmentData } from "../app/dashboard/_components/EditInvestmentForm"
+import { Sells } from "@/app/dashboard/page"
 
 dotenv.config()
 
@@ -106,6 +107,22 @@ export async function updateInvestment({ investment }: { investment: InvestmentD
 export async function deleteInvestment(investmentid: number) {
     const result = await sql`
         DELETE FROM investments WHERE id = ${investmentid}
+    `
+    redirect('/dashboard')
+}
+
+export async function getUserSells(userId: string | null) {
+    const result = await sql`
+        SELECT * FROM sells WHERE user_id = ${userId}
+    `
+    return result
+}
+
+export async function saveUserSell(sell: Sells) {
+    const result = await sql`
+        INSERT INTO sells
+        (coin_name, amount_sold, buy_price, sell_price, total_received)
+        VALUES (${sell.coin_name, sell.amount_sold, sell.buy_price, sell.total_received})
     `
     redirect('/dashboard')
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { getUserInvestments } from "@/server/database"
+import { getUserInvestments, getUserSells } from "@/server/database"
 import Link from "next/link"
 import { fetchCurrentPrices } from '@/server/coingecko'
 import { EditIcon, Trash2 } from 'lucide-react'
@@ -18,6 +18,15 @@ export type Investment = {
     coin_price: number
     total_spent: number
     buy_price: string
+    created_at: string
+}
+export type Sells = {
+    id: number
+    coin_name: string
+    amount_sold: string
+    buy_price: number
+    sell_price: string
+    total_received: number
     created_at: string
 }
 type Prices = {
@@ -36,31 +45,40 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 export default function Dashboard() {
-    const [userInvestments, setUserInvestments] = useState<Investment[]>([]);
-    const [currentPrices, setCurrentPrices] = useState<{ [key: string]: { ars: number } }>({});
+    const [userInvestments, setUserInvestments] = useState<Investment[]>([])
+    const [userSells, setUserSells] = useState<Sells[]>([])
+    const [currentPrices, setCurrentPrices] = useState<{ [key: string]: { ars: number } }>({})
 
     useEffect(() => {
         async function fetchInvestments() {
             const investments = await getUserInvestments(userId) as Investment[];
-            setUserInvestments(investments);
+            setUserInvestments(investments)
         }
-        fetchInvestments();
-    }, []);
+        fetchInvestments()
+    }, [])
+
+    useEffect(() => {
+        async function fetchSells() {
+            const sells = await getUserSells(userId) as Sells[]
+            setUserSells(sells)
+        }
+        fetchSells()
+    }, [])
 
     useEffect(() => {
         async function updatePrices() {
             if (userInvestments.length > 0) {
-                const coinIds = userInvestments.map((investment) => investment.coin_name);
-                const prices = await fetchCurrentPrices(coinIds);
+                const coinIds = userInvestments.map((investment) => investment.coin_name)
+                const prices = await fetchCurrentPrices(coinIds)
                 if (prices) {
-                    setCurrentPrices(prices);
+                    setCurrentPrices(prices)
                 } else {
-                    console.error('Failed to fetch current prices');
+                    console.error('Failed to fetch current prices')
                 }
             }
         }
         updatePrices();
-    }, [userInvestments]);
+    }, [userInvestments])
 
     const calculatedTotal = userInvestments.reduce((acc, investment) => {
         const currentPrice = currentPrices[investment.coin_name]?.ars || 0;
@@ -83,7 +101,7 @@ export default function Dashboard() {
                     <TabsTrigger value={'Stats'}>Your stats</TabsTrigger>
                 </TabsList>
                 <TabsContent value='Table'>
-                    <h1 className='font-bold text-3xl mb-4'>Your table</h1>
+                    <h1 className='font-bold text-3xl mb-4'>Your buys</h1>
                     <table className="table-auto border-collapse w-full font-sans">
                         <thead>
                             <tr>
@@ -164,6 +182,68 @@ export default function Dashboard() {
                         </Link>
                     </Button>
                     <hr className='mt-4 mb-4' style={{ borderColor: '#d0d5db' }} />
+                    <h1 className='font-bold text-3xl mb-4'>Your sells</h1>
+                    <table className="table-auto border-collapse w-full font-sans">
+                        <thead>
+                            <tr>
+                                <th className="border border-gray-300 px-2 py-1 text-left">Date</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left">Coin</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left">Amount Sold</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left">Buy price</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left">Sell price</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left">Total fiat received</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left">Profit/loss</th>
+                                <th className="border border-gray-300 px-2 py-1 text-left" style={{ width: '150px' }}>Actions</th>
+                            </tr>
+                        </thead>
+                        {userSells.map((sell) => (
+                            <tbody key={sell.id}>
+                                <tr className="bg-gray-200">
+                                    <td className="border border-gray-300 px-2 py-1">
+                                        {new Intl.DateTimeFormat('en-US', {
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            year: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            hour12: false,
+                                        }).format(new Date(sell.created_at))}
+                                    </td>
+                                    <td className="border border-gray-300 px-2 py-1">{sell.coin_name}</td>
+                                    <td className="border border-gray-300 px-2 py-1">{sell.amount_sold}</td>
+                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.buy_price.toString()))}</td>
+                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.sell_price.toString()))}</td>
+                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.total_received.toString()))}</td>
+
+                                    <td
+                                    className={`
+                                        ${
+                                        (parseFloat(sell.sell_price) - parseFloat(sell.buy_price.toString())) * parseFloat(sell.amount_sold) < 0 
+                                            ? 'text-red-600' 
+                                            : 'text-green-600'
+                                        }
+                                    `}
+                                    >
+                                        {formatter.format(
+                                            (parseFloat(sell.sell_price.toString()) - parseFloat(sell.buy_price.toString())) * parseFloat(sell.amount_sold.toString())
+                                        )}
+                                    </td>
+                                    {/* <td className="border border-gray-300 px-2 py-1 flex space-x-2">
+                                        <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]">
+                                            <Link href={`/dashboard/${investment.id}/edit`}>
+                                                <EditIcon />
+                                            </Link>
+                                        </Button>
+                                        <Button className="text-white px-4 py-2 rounded">
+                                            <Link href={`/dashboard/${investment.id}/delete`}>
+                                                <Trash2 />
+                                            </Link>
+                                        </Button>
+                                    </td> */}
+                                </tr>
+                            </tbody>
+                        ))}
+                    </table>
                 </TabsContent>
 
                 <TabsContent value='Crypto'>

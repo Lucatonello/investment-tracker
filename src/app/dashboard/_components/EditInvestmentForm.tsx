@@ -122,7 +122,7 @@ export function EditInvestmentForm({ investmentId }: EditInvestmentFormProps) {
                 <input
                     className="w-full border p-2"
                     id="total-spent"
-                    type="number"
+                    type="float"
                     min="0"
                     value={investmentData.total_spent || ""}
                     onChange={(e) =>
