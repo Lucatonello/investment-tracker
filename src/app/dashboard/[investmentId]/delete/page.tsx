@@ -5,8 +5,8 @@ import { deleteInvestment } from "@/server/database"
 import { useParams } from "next/navigation"
 
 export default function DeleteInvestment() {
-    const { investmentId } = useParams();
-    const investmentIdNumber = Number(investmentId);
+    const { investmentId } = useParams()
+    const investmentIdNumber = Number(investmentId)
 
     function handleDelete() {
         deleteInvestment(investmentIdNumber)

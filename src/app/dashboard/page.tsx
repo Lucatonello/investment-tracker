@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { getUserInvestments, getUserSells } from "@/server/database"
 import Link from "next/link"
 import { fetchCurrentPrices } from '@/server/coingecko'
-import { EditIcon, Trash2 } from 'lucide-react'
+import { EditIcon, HandCoins, Trash2 } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { CoinCharts } from './_components/charts/CoinCharts'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -150,12 +150,17 @@ export default function Dashboard() {
                                         )}
                                     </td>
                                     <td className="border border-gray-300 px-2 py-1 flex space-x-2">
-                                        <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]">
+                                        <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]" title='Edit'>
                                             <Link href={`/dashboard/${investment.id}/edit`}>
                                                 <EditIcon />
                                             </Link>
                                         </Button>
-                                        <Button className="text-white px-4 py-2 rounded">
+                                        <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]" title='Mark as sold'>
+                                            <Link href={`/dashboard/${investment.id}/sell`}>
+                                                <HandCoins />
+                                            </Link>
+                                        </Button>
+                                        <Button className="text-white px-4 py-2 rounded" title='Delete'>
                                             <Link href={`/dashboard/${investment.id}/delete`}>
                                                 <Trash2 />
                                             </Link>

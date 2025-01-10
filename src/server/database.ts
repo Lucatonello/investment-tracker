@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
 import { InvestmentData } from "../app/dashboard/_components/EditInvestmentForm"
 import { Sells } from "@/app/dashboard/page"
+import { fetchCoinPrice } from "./coingecko"
 
 dotenv.config()
 
@@ -29,7 +30,7 @@ export type User = {
 }
 
 type EditInvestmentFormProps = {
-    investmentId: string;
+    investmentId: string | number;
 };
 
 export async function saveUser(user: User) {
@@ -124,5 +125,48 @@ export async function saveUserSell(sell: Sells) {
         (coin_name, amount_sold, buy_price, sell_price, total_received)
         VALUES (${sell.coin_name, sell.amount_sold, sell.buy_price, sell.total_received})
     `
+    redirect('/dashboard')
+}
+
+export async function sellInvestment({ investmentId, amountSold, fiatReceived, userId }
+    :{ 
+        investmentId: number, 
+        amountSold: number, 
+        fiatReceived: number,
+        userId: string | null
+    }) {
+
+    const investmentData = await getInvestmentData({ investmentId })
+    if (!investmentData) throw new Error("Investment not found.")
+
+    const { coin_amount } = investmentData
+    if (amountSold > coin_amount) throw new Error("Sold amount exceeds available quantity.")
+
+    const coinCurrentPrice = await fetchCoinPrice(investmentData.coin_name)
+
+    if (amountSold == coin_amount) {
+
+        await sql`
+            DELETE FROM investments WHERE id = ${investmentId}
+        `
+
+        await sql`
+            INSERT INTO sells (coin_name, amount_sold, buy_price, sell_price, total_received, user_id)
+            VALUES (${investmentData.coin_name}, ${amountSold}, ${investmentData.buy_price}, ${coinCurrentPrice}, ${fiatReceived}, ${userId})        
+        `
+    } else {
+        const remainingQuantity = coin_amount - amountSold
+
+        await sql`
+            UPDATE investments
+            SET coin_amount = ${remainingQuantity}
+            WHERE id = ${investmentId}
+        `
+
+        await sql`
+            INSERT INTO sells (coin_name, amount_sold, buy_price, sell_price, total_received, user_id)
+            VALUES (${investmentData.coin_name}, ${amountSold}, ${investmentData.buy_price}, ${coinCurrentPrice}, ${fiatReceived}, ${userId})
+        `
+    }
     redirect('/dashboard')
 }
