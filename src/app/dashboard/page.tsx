@@ -187,68 +187,72 @@ export default function Dashboard() {
                         </Link>
                     </Button>
                     <hr className='mt-4 mb-4' style={{ borderColor: '#d0d5db' }} />
-                    <h1 className='font-bold text-3xl mb-4'>Your sells</h1>
-                    <table className="table-auto border-collapse w-full font-sans">
-                        <thead>
-                            <tr>
-                                <th className="border border-gray-300 px-2 py-1 text-left">Date</th>
-                                <th className="border border-gray-300 px-2 py-1 text-left">Coin</th>
-                                <th className="border border-gray-300 px-2 py-1 text-left">Amount Sold</th>
-                                <th className="border border-gray-300 px-2 py-1 text-left">Buy price</th>
-                                <th className="border border-gray-300 px-2 py-1 text-left">Sell price</th>
-                                <th className="border border-gray-300 px-2 py-1 text-left">Total fiat received</th>
-                                <th className="border border-gray-300 px-2 py-1 text-left">Profit/loss</th>
-                                <th className="border border-gray-300 px-2 py-1 text-left" style={{ width: '150px' }}>Actions</th>
-                            </tr>
-                        </thead>
-                        {userSells.map((sell) => (
-                            <tbody key={sell.id}>
-                                <tr className="bg-gray-200">
-                                    <td className="border border-gray-300 px-2 py-1">
-                                        {new Intl.DateTimeFormat('en-US', {
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                            year: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                            hour12: false,
-                                        }).format(new Date(sell.created_at))}
-                                    </td>
-                                    <td className="border border-gray-300 px-2 py-1">{sell.coin_name}</td>
-                                    <td className="border border-gray-300 px-2 py-1">{sell.amount_sold}</td>
-                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.buy_price.toString()))}</td>
-                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.sell_price.toString()))}</td>
-                                    <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.total_received.toString()))}</td>
+                    {userSells?.length > 0 && (
+                        <div>
+                            <h1 className='font-bold text-3xl mb-4'>Your sells</h1>
+                            <table className="table-auto border-collapse w-full font-sans">
+                                <thead>
+                                    <tr>
+                                        <th className="border border-gray-300 px-2 py-1 text-left">Date</th>
+                                        <th className="border border-gray-300 px-2 py-1 text-left">Coin</th>
+                                        <th className="border border-gray-300 px-2 py-1 text-left">Amount Sold</th>
+                                        <th className="border border-gray-300 px-2 py-1 text-left">Buy price</th>
+                                        <th className="border border-gray-300 px-2 py-1 text-left">Sell price</th>
+                                        <th className="border border-gray-300 px-2 py-1 text-left">Total fiat received</th>
+                                        <th className="border border-gray-300 px-2 py-1 text-left">Profit/loss</th>
+                                        <th className="border border-gray-300 px-2 py-1 text-left" style={{ width: '150px' }}>Actions</th>
+                                    </tr>
+                                </thead>
+                                {userSells.map((sell) => (
+                                    <tbody key={sell.id}>
+                                        <tr className="bg-gray-200">
+                                            <td className="border border-gray-300 px-2 py-1">
+                                                {new Intl.DateTimeFormat('en-US', {
+                                                    month: '2-digit',
+                                                    day: '2-digit',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: false,
+                                                }).format(new Date(sell.created_at))}
+                                            </td>
+                                            <td className="border border-gray-300 px-2 py-1">{sell.coin_name}</td>
+                                            <td className="border border-gray-300 px-2 py-1">{sell.amount_sold}</td>
+                                            <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.buy_price.toString()))}</td>
+                                            <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.sell_price.toString()))}</td>
+                                            <td className="border border-gray-300 px-2 py-1">{formatter.format(parseFloat(sell.total_received.toString()))}</td>
 
-                                    <td
-                                    className={`
-                                        ${
-                                        (parseFloat(sell.sell_price) - parseFloat(sell.buy_price.toString())) * parseFloat(sell.amount_sold) < 0 
-                                            ? 'text-red-600' 
-                                            : 'text-green-600'
-                                        }
-                                    `}
-                                    >
-                                        {formatter.format(
-                                            (parseFloat(sell.sell_price.toString()) - parseFloat(sell.buy_price.toString())) * parseFloat(sell.amount_sold.toString())
-                                        )}
-                                    </td>
-                                    {/* <td className="border border-gray-300 px-2 py-1 flex space-x-2">
-                                        <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]">
-                                            <Link href={`/dashboard/${investment.id}/edit`}>
-                                                <EditIcon />
-                                            </Link>
-                                        </Button>
-                                        <Button className="text-white px-4 py-2 rounded">
-                                            <Link href={`/dashboard/${investment.id}/delete`}>
-                                                <Trash2 />
-                                            </Link>
-                                        </Button>
-                                    </td> */}
-                                </tr>
-                            </tbody>
-                        ))}
-                    </table>
+                                            <td
+                                            className={`
+                                                ${
+                                                (parseFloat(sell.sell_price) - parseFloat(sell.buy_price.toString())) * parseFloat(sell.amount_sold) < 0 
+                                                    ? 'text-red-600' 
+                                                    : 'text-green-600'
+                                                }
+                                            `}
+                                            >
+                                                {formatter.format(
+                                                    (parseFloat(sell.sell_price.toString()) - parseFloat(sell.buy_price.toString())) * parseFloat(sell.amount_sold.toString())
+                                                )}
+                                            </td>
+                                            {/* <td className="border border-gray-300 px-2 py-1 flex space-x-2">
+                                                <Button className="bg-#424246 text-black px-4 py-2 rounded hover:bg-[#d1d1d3]">
+                                                    <Link href={`/dashboard/${investment.id}/edit`}>
+                                                        <EditIcon />
+                                                    </Link>
+                                                </Button>
+                                                <Button className="text-white px-4 py-2 rounded">
+                                                    <Link href={`/dashboard/${investment.id}/delete`}>
+                                                        <Trash2 />
+                                                    </Link>
+                                                </Button>
+                                            </td> */}
+                                        </tr>
+                                    </tbody>
+                                ))}
+                            </table>
+                        </div>
+                    )}
                 </TabsContent>
 
                 <TabsContent value='Crypto'>

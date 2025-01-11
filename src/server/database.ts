@@ -135,7 +135,8 @@ export async function sellInvestment({ investmentId, amountSold, fiatReceived, u
         fiatReceived: number,
         userId: string | null
     }) {
-
+        
+    console.log('backend has been hit')
     const investmentData = await getInvestmentData({ investmentId })
     if (!investmentData) throw new Error("Investment not found.")
 
