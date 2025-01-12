@@ -16,11 +16,19 @@ export default function Home() {
           Monitor your crypto investments effortlessly with our simple and intuitive platform. Stay updated and in control!
         </p>
         <div className="mt-8">
-          <Button className="px-6 py-3 text-lg font-semibold bg-yellow-400 hover:bg-yellow-500 rounded-md shadow-md transition">
-            <Link href="/dashboard" className="text-indigo-900">
-              Go to Dashboard
-            </Link>
-          </Button>
+          {userId ? (
+            <Button className="px-6 py-3 text-lg font-semibold bg-yellow-400 hover:bg-yellow-500 rounded-md shadow-md transition">
+              <Link href="/dashboard" className="text-indigo-900">
+                Go to Dashboard
+              </Link>
+            </Button>
+          ): (
+            <Button className="px-6 py-3 text-lg font-semibold bg-yellow-400 hover:bg-yellow-500 rounded-md shadow-md transition">
+              <Link href="/auth/sign-in" className="text-indigo-900">
+                Login
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
   

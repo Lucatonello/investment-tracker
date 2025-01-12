@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 export type Coin = {
     id: string
     symbol: string
