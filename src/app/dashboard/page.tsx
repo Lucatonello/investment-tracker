@@ -42,7 +42,7 @@ const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'ARS',
     minimumFractionDigits: 2,
-});
+})
 
 export default function Dashboard() {
     const [userInvestments, setUserInvestments] = useState<Investment[]>([])
@@ -51,7 +51,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         async function fetchInvestments() {
-            const investments = await getUserInvestments(userId) as Investment[];
+            const investments = await getUserInvestments(userId) as Investment[]
             setUserInvestments(investments)
         }
         fetchInvestments()
@@ -77,20 +77,20 @@ export default function Dashboard() {
                 }
             }
         }
-        updatePrices();
+        updatePrices()
     }, [userInvestments])
 
     const calculatedTotal = userInvestments.reduce((acc, investment) => {
-        const currentPrice = currentPrices[investment.coin_name]?.ars || 0;
-        const investmentValue = parseFloat(investment.coin_amount) * currentPrice;
-        return acc + investmentValue;
-    }, 0);
+        const currentPrice = currentPrices[investment.coin_name]?.ars || 0
+        const investmentValue = parseFloat(investment.coin_amount) * currentPrice
+        return acc + investmentValue
+    }, 0)
 
     const totalProfit = userInvestments.reduce((acc, investment) => {
-        const currentPrice = currentPrices[investment.coin_name]?.ars || 0;
-        const profit = (currentPrice - parseFloat(investment.buy_price)) * parseFloat(investment.coin_amount);
-        return acc + profit;
-    }, 0);
+        const currentPrice = currentPrices[investment.coin_name]?.ars || 0
+        const profit = (currentPrice - parseFloat(investment.buy_price)) * parseFloat(investment.coin_amount)
+        return acc + profit
+    }, 0)
 
     return (
         <div>
@@ -263,5 +263,5 @@ export default function Dashboard() {
                 </TabsContent>
             </Tabs>
         </div>
-    );
+    )
 }

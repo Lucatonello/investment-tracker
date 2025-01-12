@@ -8,7 +8,11 @@ import { fetchCoinPrice } from "./coingecko"
 
 dotenv.config()
 
-const DATABASE_URL = 'postgresql://neondb_owner:y2DMbfda5uiB@ep-young-cherry-a4zt15jb.us-east-1.aws.neon.tech/neondb?sslmode=require'
+const DATABASE_URL = process.env.NEXT_PUBLIC_DATABASE_URL
+
+if (!DATABASE_URL) {
+    throw new Error('Database URL is not defined')
+}
 
 const sql = neon(DATABASE_URL)
 
@@ -30,8 +34,8 @@ export type User = {
 }
 
 type EditInvestmentFormProps = {
-    investmentId: string | number;
-};
+    investmentId: string | number
+}
 
 export async function saveUser(user: User) {
     try {
@@ -136,7 +140,6 @@ export async function sellInvestment({ investmentId, amountSold, fiatReceived, u
         userId: string | null
     }) {
         
-    console.log('backend has been hit')
     const investmentData = await getInvestmentData({ investmentId })
     if (!investmentData) throw new Error("Investment not found.")
 

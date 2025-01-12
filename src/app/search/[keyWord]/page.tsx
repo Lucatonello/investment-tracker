@@ -29,7 +29,6 @@ export default function SearchPage({ params }: { params: Params }) {
                     const result = await fetchMatches(newKeyWord.toLowerCase())
                     setMatches(result)
                     setLoading(false)
-                    console.log('result: ', result)
                 }
             }
             getMatches()

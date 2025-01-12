@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
-import { fetchCoinChart } from "@/server/coingecko";
-import { Chart, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController } from "chart.js";
+import { useEffect, useState, useRef } from "react"
+import { fetchCoinChart } from "@/server/coingecko"
+import { Chart, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController } from "chart.js"
 
 Chart.register(
   CategoryScale,
@@ -11,61 +11,61 @@ Chart.register(
   Tooltip,
   Legend,
   LineController
-);
+)
 
 type CoinChartsProps = {
-  coins: string[];
-};
+  coins: string[]
+}
 
 type CoinData = {
-  prices: number[][];
-  market_caps: number[][];
-  total_volumes: number[][];
-};
+  prices: number[][]
+  market_caps: number[][]
+  total_volumes: number[][]
+}
 
 export function CoinCharts({ coins }: CoinChartsProps) {
-  const [data, setData] = useState<CoinData[]>([]);
-  const chartRefs = useRef<(HTMLCanvasElement | null)[]>([]);
-  const chartInstances = useRef<(Chart | null)[]>([]);
+  const [data, setData] = useState<CoinData[]>([])
+  const chartRefs = useRef<(HTMLCanvasElement | null)[]>([])
+  const chartInstances = useRef<(Chart | null)[]>([])
 
   useEffect(() => {
     async function fetchData() {
       const allData = await Promise.all(
         coins.map(async (coin) => {
-          const result = await fetchCoinChart(coin);
+          const result = await fetchCoinChart(coin)
           if (result) {
             return {
               prices: result.prices,
               market_caps: result.market_caps,
               total_volumes: result.total_volumes,
-            };
+            }
           } else {
             return {
               prices: [],
               market_caps: [],
               total_volumes: [],
-            };
+            }
           }
         })
-      );
-      setData(allData);
+      )
+      setData(allData)
     }
-    fetchData();
-  }, [coins]);
+    fetchData()
+  }, [coins])
 
   const chartColor = (priceData: number[][]) => {
-    const firstPrice = priceData && priceData[0]?.[1] || 0;
-    const lastPrice =  priceData && priceData[priceData.length - 1]?.[1] || 0;
-    return lastPrice > firstPrice ? "green" : "red";
-  };
+    const firstPrice = priceData && priceData[0]?.[1] || 0
+    const lastPrice =  priceData && priceData[priceData.length - 1]?.[1] || 0
+    return lastPrice > firstPrice ? "green" : "red"
+  }
 
   useEffect(() => {
     if (data.length > 0) {
       data.forEach((coinData, index) => {
-        const canvas = chartRefs.current[index];
+        const canvas = chartRefs.current[index]
         if (canvas) {
           if (chartInstances.current[index]) {
-            chartInstances.current[index]?.destroy();
+            chartInstances.current[index]?.destroy()
           }
 
           // Create a new chart instance
@@ -123,13 +123,13 @@ export function CoinCharts({ coins }: CoinChartsProps) {
                 },
               },
             },
-          });
+          })
 
-          chartInstances.current[index] = chart;
+          chartInstances.current[index] = chart
         }
-      });
+      })
     }
-  }, [data]);
+  }, [data])
 
   return (
     <div>
@@ -146,5 +146,5 @@ export function CoinCharts({ coins }: CoinChartsProps) {
         <div>Loading...</div>
       )}
     </div>
-  );
+  )
 }

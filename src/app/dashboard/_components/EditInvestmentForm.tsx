@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { getInvestmentData, updateInvestment } from "@/server/database";
-import { fetchCoinList } from "@/server/coingecko";
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { getInvestmentData, updateInvestment } from "@/server/database"
+import { fetchCoinList } from "@/server/coingecko"
 
 type EditInvestmentFormProps = {
-    investmentId: string;
-};
+    investmentId: string
+}
 
 export type InvestmentData = {
     buy_price: string,
@@ -18,38 +18,38 @@ export type InvestmentData = {
 }
 
 interface Coin {
-    id: string;
-    name: string;
+    id: string
+    name: string
   }
 
 export function EditInvestmentForm({ investmentId }: EditInvestmentFormProps) {
-    const [investmentData, setInvestmentData] = useState<InvestmentData | null>(null);
-    const [coinsList, setCoinsList] = useState<Coin[]>([]);
+    const [investmentData, setInvestmentData] = useState<InvestmentData | null>(null)
+    const [coinsList, setCoinsList] = useState<Coin[]>([])
 
     useEffect(() => {
         async function fetchData() {
-            const data = await getInvestmentData({ investmentId });
-            setInvestmentData(data);
+            const data = await getInvestmentData({ investmentId })
+            setInvestmentData(data)
         }
 
         async function fetchCoins() {
             const coins = await fetchCoinList()
-            setCoinsList(coins);
+            setCoinsList(coins)
         }
 
-        fetchData();
-        fetchCoins();
-    }, [investmentId]);
+        fetchData()
+        fetchCoins()
+    }, [investmentId])
 
     function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
+        e.preventDefault()
         if (investmentData) {
-            updateInvestment({ investment: investmentData });
+            updateInvestment({ investment: investmentData })
         }
     }
 
     if (!investmentData) {
-        return <div>Loading...</div>;
+        return <div>Loading...</div>
     }
 
     return (
@@ -79,9 +79,9 @@ export function EditInvestmentForm({ investmentId }: EditInvestmentFormProps) {
                     id="coin-name"
                     value={investmentData.coin_name || ""}
                     onChange={(e) => {
-                        const selectedCoinId = e.target.value;
-                        const coin = coinsList.find((coin) => coin.id === selectedCoinId) || null;
-                        setInvestmentData({ ...investmentData, coin_name: coin ? coin.id : "" });
+                        const selectedCoinId = e.target.value
+                        const coin = coinsList.find((coin) => coin.id === selectedCoinId) || null
+                        setInvestmentData({ ...investmentData, coin_name: coin ? coin.id : "" })
                     }}
                 >
                     <option value="">Select a coin</option>
@@ -132,5 +132,5 @@ export function EditInvestmentForm({ investmentId }: EditInvestmentFormProps) {
             </div>
             <Button type="submit">Save Changes</Button>
         </form>
-    );
+    )
 }

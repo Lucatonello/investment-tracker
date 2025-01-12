@@ -1,6 +1,6 @@
-import { Button } from "./ui/button";
+import { Button } from "./ui/button"
 
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react'
 
 export default function ReafirmationPage({ title, action, children }: { title: string, action: MouseEventHandler<HTMLButtonElement>, children?: React.ReactNode }) {
     return <div className="fixed inset-0 flex items-center justify-center z-50">

@@ -1,6 +1,6 @@
 "use client"
 
-import { logInUser } from "@/server/database";
+import { logInUser } from "@/server/database"
 import { useState } from "react"
 
 export function SignInForm() {
@@ -10,18 +10,18 @@ export function SignInForm() {
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target
         setFormData({
             ...formData,
             [name]: value
-        });
-    };
+        })
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
-            e.preventDefault();
+            e.preventDefault()
             
             await logInUser(formData)
-    };
+    }
 
     return <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto p-6 bg-white shadow-md rounded-lg flex flex-col space-y-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <h2 className="text-xl font-bold text-gray-800 text-center">Sign In</h2>

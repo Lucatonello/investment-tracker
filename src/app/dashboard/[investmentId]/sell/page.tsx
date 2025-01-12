@@ -1,13 +1,13 @@
 "use client"
 
-import { sellInvestment } from "@/server/database";
+import { sellInvestment } from "@/server/database"
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function Sell() {
-    const { investmentId } = useParams();
+    const { investmentId } = useParams()
     const investmentIdNumber = Number(investmentId)
     const [amountSold, setAmountSold] = useState<number>(0)
     const [fiatReceived, setFiatReceived] = useState<number>(0)
@@ -21,7 +21,6 @@ export default function Sell() {
     }, [])
 
     function handleSell(e: any) {
-      console.log('function has been hit')
 
       e.preventDefault()
 

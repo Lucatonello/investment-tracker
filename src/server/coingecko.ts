@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 export type Coin = {
     id: string
     symbol: string
@@ -7,17 +9,19 @@ export type Coin = {
     }
 }
 
+const COINGECKO_KEY = process.env.NEXT_PUBLIC_COINGECKO_KEY
+
 export async function fetchCoinList(): Promise<Coin[]> {
     const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=200&page=1'
     const options = {
         method: 'GET',
-        headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
-    };
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
+    }
     
     const result = await fetch(url, options)
       .then(res => res.json())
       .then(json => {
-          return json;
+          return json
       })
       .catch(err => console.error(err))
 
@@ -28,13 +32,13 @@ export async function fetchCoinPrice(coinId: string): Promise<number> {
     const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=ars`
     const options = {
         method: 'GET',
-        headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
-    };
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
+    }
     
     const result = await fetch(url, options)
       .then(res => res.json())
       .then(json => {
-          return json[coinId].ars;
+          return json[coinId].ars
       })
       .catch(err => console.error(err))
 
@@ -45,7 +49,7 @@ export async function fetchCurrentPrices(coinIds: Array<string>) {
     const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinIds}&vs_currencies=ars`
     const options = {
         method: 'GET',
-        headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
     }
 
     const result = await fetch(url, options)
@@ -63,7 +67,7 @@ export async function fetchCoinChart(coinId: string) {
     const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=ars&days=7`
     const options = {
         method: 'GET',
-        headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+        headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
     }
 
     const result = await fetch(url, options)
@@ -84,7 +88,7 @@ export async function fetchCoinsMarketData() {
   const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=ars&order=market_cap_desc&per_page=150&page=1&sparkline=true&price_change_percentage=7d&locale=en'
   const options = {
     method: 'GET',
-    headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+    headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
   }
 
   const result = await fetch(url, options)
@@ -101,7 +105,7 @@ export async function fetchPopularCoins() {
   const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=ars&order=volume_desc&per_page=10'
   const options = {
     method: 'GET',
-    headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+    headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
   }
 
   const result = await fetch(url, options)
@@ -118,7 +122,7 @@ export async function fetchCoinDatabyId(coinId: string) {
   const url = `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=true&sparkline=false`
   const options = {
     method: 'GET',
-    headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+    headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
   }
 
   const result = await fetch(url, options)
@@ -135,7 +139,7 @@ export async function fetchMatches(keyword: string) {
   const url = `https://api.coingecko.com/api/v3/coins/list`
   const options = {
     method: 'GET',
-    headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-f8rYSYofVSkG9D8TPYhpvdJ4'}
+    headers: {accept: 'application/json', 'x-cg-demo-api-key': `${COINGECKO_KEY}`}
   }
 
   const result = await fetch(url, options)

@@ -1,4 +1,4 @@
-import { SignInForm } from "../_components/SIgnInForm";
+import { SignInForm } from "../_components/SIgnInForm"
 
 export default function SignInPage() {
   

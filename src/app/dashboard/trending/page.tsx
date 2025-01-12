@@ -45,7 +45,6 @@ export default function TrendingPage() {
         async function getNews() {
           const response = await fetchNews()
           setNews(response.results)
-          console.log(response.results)
         }
         getNews()
       }

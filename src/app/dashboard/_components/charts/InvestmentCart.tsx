@@ -10,7 +10,6 @@ import {
     LinearScale
 } from "chart.js"
 
-// Register necessary components for Chart.js
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale)
 
 type SumObj = {
@@ -23,8 +22,6 @@ type InvestmentChartProps = {
 }
 
 const InvestmentChart: React.FC<InvestmentChartProps> = ({ userInvestment }) => {
-    console.log('Prop received in chart: ', userInvestment)
-    // Prepare data for Chart.js (raw investment amounts)
     const chartData = {
         labels: userInvestment.map((obj) => obj.coin),
         datasets: [
@@ -36,7 +33,6 @@ const InvestmentChart: React.FC<InvestmentChartProps> = ({ userInvestment }) => 
         ]
     }
 
-    // Options to format the tooltips and labels as percentages
     const chartOptions = {
         responsive: true,
         plugins: {

@@ -1,8 +1,8 @@
 "use client"
 
-import { redirect } from "next/navigation";
-import { NewCoinForm } from "../_components/NewCoinForm";
-import { PageWithBackArrow } from "../_components/PageWithBackArrow";
+import { redirect } from "next/navigation"
+import { NewCoinForm } from "../_components/NewCoinForm"
+import { PageWithBackArrow } from "../_components/PageWithBackArrow"
 
 const userId = localStorage.getItem('userId')
 if (!userId) redirect('/auth/sign-in')

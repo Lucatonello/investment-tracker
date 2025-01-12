@@ -1,10 +1,9 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
-import { LogOutIcon } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { LogOutIcon } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export function Navbar() {
     const [showSearchButton, setShowSearchButton] = useState(false)
@@ -14,7 +13,7 @@ export function Navbar() {
     const handleSearch = () => {
         if (router) {
             router.push(`/search/${keyWord}`)
-        } else console.log('router not found')
+        } else console.error('router not found')
     }
 
     return <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
@@ -33,10 +32,10 @@ export function Navbar() {
           className="p-2 rounded-lg text-black focus:outline-none w-52 md:w-64"
           onChange={(e) => {
             if (e.target.value.length > 0) {
-              setShowSearchButton(true);
-              setKeyWord(e.target.value);
+              setShowSearchButton(true)
+              setKeyWord(e.target.value)
             } else {
-              setShowSearchButton(false);
+              setShowSearchButton(false)
             }
           }} 
         />
