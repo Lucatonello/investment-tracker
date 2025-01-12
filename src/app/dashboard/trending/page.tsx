@@ -59,7 +59,7 @@ export default function TrendingPage() {
                     <TabsTrigger value={'News'}>News</TabsTrigger>
                   </TabsList>
                   <TabsContent value="Top movers (7D)">
-                      <h1 className="font-bold text-4xl mt-4 mb-4">Top Coins by 7-Day Price Change</h1>        
+                      <h1 className="font-bold text-4xl mt-4 mb-4 text-gray-800">Top Coins by 7-Day Price Change</h1>        
                       <ul>
                           {topTenCoins?.map((coin) => (
                             <li key={coin.id} className="flex flex-col bg-[#f0f9ff] p-5 m-10 rounded-lg shadow-lg mb-6 hover:shadow-1xl transition-shadow h-[717px]">
@@ -107,7 +107,7 @@ export default function TrendingPage() {
                       </ul>
                   </TabsContent>
                   <TabsContent value="Most popular">
-                    <h1 className="font-bold text-4xl mt-4 mb-4">Most popular coins in the last 24hs</h1>
+                    <h1 className="font-bold text-4xl mt-4 mb-4 text-gray-800">Most popular coins in the last 24hs</h1>
                     <ul>
                       {popularCoins?.map((coin) => (
                         <li key={coin.id} className="flex flex-col bg-[#f0f9ff] p-5 m-10 rounded-lg shadow-lg mb-6 hover:shadow-1xl transition-shadow">
@@ -154,7 +154,7 @@ export default function TrendingPage() {
                     </ul>
                   </TabsContent>
                   <TabsContent value="News">
-                    <h1 className="font-bold text-4xl mt-4 mb-4">News</h1>
+                    <h1 className="font-bold text-4xl mt-4 mb-4 text-gray-800">News</h1>
                     {news ? (
                       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {news.map((newsItem: any) => (
