@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Track My Crypto
 
-## Getting Started
+A Next.js application that helps you track your cryptocurrency investments and monitor real-time market trends. The app provides a user-friendly interface to manage your investment portfolio, track profits, view real-time charts, and access detailed information about cryptocurrencies.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Dashboard
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Investment Tracker**: 
+  - Track your crypto investments in a table.
+  - Calculate profit and loss for each asset.
+  - Edit, delete, or mark investments as sold.
+- **Sales Table**: 
+  - Displays a table of your completed trades with profit and other trade details.
+- **Real-Time Charts**: 
+  - View real-time price, market cap, and total volume charts for the cryptocurrencies you have invested in.
+- **Token Distribution Pie Chart**: 
+  - A pie chart displaying the distribution of your tokens for a visual overview of your portfolio.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Trending Section
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Top Coins by 7-Day Price Change**:
+  - View the top-performing coins over the last 7 days based on price change.
+- **Most Popular Coins**:
+  - See the most traded cryptocurrencies in the last 7 days.
+- **Crypto News**:
+  - Stay updated with the latest news in the cryptocurrency world.
+  
+### Coin Profiles
 
-## Learn More
+- **Detailed Coin Info**: 
+  - View a detailed profile for each cryptocurrency with metadata such as:
+    - Description
+    - Tags
+    - Sentiment analysis
+    - Market cap rank
+    - And more...
+- **Links**: 
+  - Access links to the coin's official homepage, repositories, and other resources.
+- **Price Graph**: 
+  - A price graph showing the historical price of the coin over time.
 
-To learn more about Next.js, take a look at the following resources:
+### Search Functionality
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Search Coins**: 
+  - Search for any coin by name and view its profile with all the relevant details and charts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Installation
 
-## Deploy on Vercel
+### Prerequisites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Node.js](https://nodejs.org/en/) (v16 or higher)
+- [npm](https://npmjs.com/) or [Yarn](https://yarnpkg.com/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Steps
+
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/Lucatonello/investment-tracker.git
+    ```
+
+2. Navigate to the project directory:
+    ```bash
+    cd investment-tracker
+    ```
+
+3. Install the dependencies:
+    ```bash
+    npm install
+    ```
+
+4. Run the development server:
+    ```bash
+    npm run dev
+    ```
+
+5. Open your browser and visit [http://localhost:3000](http://localhost:3000) to view the application.
+
+## Tech Stack
+- **Frontend**: Next.js, Chart.js Tailwind CSS, Lucide, Shadcn
+- **Backend**: CoinGecko API, Newsdata API, Neon database
+- **State Management**: React hooks, Localstorage
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute to this project, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -am 'Add new feature'`).
+5. Push to your fork (`git push origin feature-branch`).
+6. Open a pull request.
