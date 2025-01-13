@@ -35,7 +35,7 @@ export default function SearchPage({ params }: { params: Params }) {
         }, 300)
 
         return () => clearTimeout(debounceTimeout)
-    }, [newKeyWord])
+    }, [newKeyWord, keyWord])
 
     return <div className="p-4 bg-white rounded-lg shadow-md">
         <PageWithBackArrow title="Search" href="/dashboard">

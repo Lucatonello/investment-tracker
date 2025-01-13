@@ -3,11 +3,12 @@ import { useEffect, useState } from "react"
 import { CoinCharts } from "./charts/CoinCharts"
 
 export function CoinPage({ coinId }: { coinId: string }) {
-    const [coinData, setCoinData] = useState<any>(null)
+    const [coinData, setCoinData] = useState<Record<string, any> | null>(null)
 
     useEffect(() => {
         async function fetchCoinDatabyIdFunc() {
             const coinData = await fetchCoinDatabyId(coinId)
+            console.log(coinData)
             setCoinData(coinData)
         }
         fetchCoinDatabyIdFunc()

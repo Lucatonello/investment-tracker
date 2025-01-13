@@ -30,7 +30,7 @@ export default function Stats({ userInvestment }: { userInvestment: Investment[]
             return sumObj
         }
         calculateDistribution()
-    }, [])
+    }, [userInvestment])
     
     return <div>
         <div className="flex flex-col items-center">

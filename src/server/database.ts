@@ -138,7 +138,7 @@ export async function sellInvestment({ investmentId, amountSold, fiatReceived, u
         amountSold: number, 
         fiatReceived: number,
         userId: string | null
-    }) {
+    }): Promise<void> {
         
     const investmentData = await getInvestmentData({ investmentId })
     if (!investmentData) throw new Error("Investment not found.")

@@ -2,7 +2,6 @@
 
 import { saveUser } from '@/server/database'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 
 export function SignUpForm() {
     

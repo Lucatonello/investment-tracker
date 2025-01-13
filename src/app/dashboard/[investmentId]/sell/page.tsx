@@ -20,7 +20,7 @@ export default function Sell() {
       }
     }, [])
 
-    function handleSell(e: any) {
+    function handleSell(e: React.FormEvent<HTMLFormElement>) {
 
       e.preventDefault()
 
@@ -28,6 +28,11 @@ export default function Sell() {
             alert("Please fill in all fields.")
             return
         }
+
+        if (!userId) {
+            alert("User ID not found. Please log in again.");
+            return;
+          }
 
         try {
           sellInvestment({ investmentId: investmentIdNumber, amountSold, fiatReceived, userId })
